@@ -7,9 +7,7 @@ use App\Http\Controllers\User\AttendanceController;
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', '/login');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -32,7 +30,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 });
 // --- Employee Management (admin & manager) ---
 Route::middleware(['auth', 'role_or_permission:admin|manage employees'])->group(function () {
-    Route::resource('employees', EmployeeController::class);
+    Route::get('employees', [EmployeeController::class, 'index'])->name('employees.index');
+    Route::get('/employees/data', [EmployeeController::class, 'data'])->name('employees.data');
+    Route::post('/employees', [EmployeeController::class, 'store'])->name('employees.store');
+    // Tambahkan route resource lainnya jika diperlukan (edit, update, destroy)
+    Route::get('/employees/{employee}/edit', [EmployeeController::class, 'edit'])->name('employees.edit');
+    Route::put('/employees/{employee}', [EmployeeController::class, 'update'])->name('employees.update');
+    Route::delete('/employees/{employee}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
 });
 
 // --- Attendance (admin, manager, staff sesuai permission) ---
