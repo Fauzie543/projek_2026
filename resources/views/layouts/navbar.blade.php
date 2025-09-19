@@ -127,6 +127,65 @@
                 </ul>
             </li>
             @endif
+            {{-- MANAGEMENT I --}}
+            @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('manager') || auth()->user()->can('view inventory'))
+            <li>
+                <button type="button"
+                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group 
+                          hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
+                    aria-controls="dropdown-inventory" data-collapse-toggle="dropdown-inventory">
+                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M3 3h18v4H3V3zm0 6h18v12H3V9z" />
+                    </svg>
+                    <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">Inventory & Procurement</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 4 4 4-4" />
+                    </svg>
+                </button>
+
+                <ul id="dropdown-inventory" class="hidden py-2 space-y-2">
+                  <li>
+                      <a href="{{ route('inventory.suppliers.index') }}"
+                          class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 
+                                group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Suppliers</a>
+                  </li>
+                  <li>
+                      <a href="{{ route('inventory.items.index') }}"
+                          class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 
+                                group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Inventory Items</a>
+                  </li>
+                  <li>
+                      <a href="{{ route('inventory.purchase-orders.index') }}"
+                          class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 
+                                group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Purchase Orders</a>
+                  </li>
+                  <li>
+                      <a href="{{ route('inventory.stock-batches.index') }}"
+                          class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 
+                                group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Stock Batches</a>
+                  </li>
+                  <li>
+                      <a href="{{ route('inventory.stock-transactions.index') }}"
+                          class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 
+                                group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Stock Transactions</a>
+                  </li>
+                  <li>
+                      <a href="{{ route('inventory.feed-recipes.index') }}"
+                          class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 
+                                group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Feed Recipes</a>
+                  </li>
+                  <li>
+                      <a href="{{ route('inventory.feed-batches.index') }}"
+                          class="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 
+                                group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700">Feed Batches</a>
+                  </li>
+              </ul>
+
+            </li>
+            @endif
+
 
         </ul>
     </div>
