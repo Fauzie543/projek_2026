@@ -8,6 +8,10 @@ use App\Http\Controllers\Inventory\ItemController;
 use App\Http\Controllers\Inventory\CategoryController;
 use App\Http\Controllers\Inventory\SupplierController;
 use App\Http\Controllers\Inventory\StockController;
+use App\Http\Controllers\Inventory\StockTransactionController;
+use App\Http\Controllers\Inventory\FeedRecipeController;
+use App\Http\Controllers\Inventory\FeedBatchController;
+use App\Http\Controllers\Inventory\StockBatchController;
 use App\Http\Controllers\Procurement\PurchaseRequestController;
 use App\Http\Controllers\Procurement\PurchaseOrderController;
 use App\Http\Controllers\Procurement\ReceivingController;
@@ -86,6 +90,7 @@ Route::middleware(['auth', 'role_or_permission:admin|manage inventory'])
         // Suppliers
         Route::prefix('suppliers')->as('suppliers.')->group(function () {
             Route::get('/', [SupplierController::class, 'index'])->name('index');
+            Route::get('/data', [SupplierController::class, 'data'])->name('data');
             Route::get('/create', [SupplierController::class, 'create'])->name('create');
             Route::post('/', [SupplierController::class, 'store'])->name('store');
             Route::get('/{supplier}/edit', [SupplierController::class, 'edit'])->name('edit');
@@ -99,6 +104,32 @@ Route::middleware(['auth', 'role_or_permission:admin|manage inventory'])
             Route::get('/history', [StockController::class, 'history'])->name('history');
             Route::post('/in', [StockController::class, 'stockIn'])->name('in');
             Route::post('/out', [StockController::class, 'stockOut'])->name('out');
+        });
+
+        Route::prefix('stock-batches')->as('stock-batches.')->group(function () {
+            Route::get('/', [StockBatchController::class, 'index'])->name('index'); // Ini juga akan menangani data()
+            Route::post('/', [StockBatchController::class, 'store'])->name('store');
+            Route::get('/{stockBatch}/edit', [StockBatchController::class, 'edit'])->name('edit');
+            Route::put('/{stockBatch}', [StockBatchController::class, 'update'])->name('update');
+            Route::delete('/{stockBatch}', [StockBatchController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('stock-transactions')->as('stock-transactions.')->group(function () {
+            Route::get('/', [StockTransactionController::class, 'index'])->name('index');
+        });
+
+        Route::prefix('feed-recipes')->as('feed-recipes.')->group(function () {
+            Route::get('/', [FeedRecipeController::class, 'index'])->name('index');
+            Route::post('/', [FeedRecipeController::class, 'store'])->name('store');
+            Route::get('/{feedRecipe}/edit', [FeedRecipeController::class, 'edit'])->name('edit');
+            Route::put('/{feedRecipe}', [FeedRecipeController::class, 'update'])->name('update');
+            Route::delete('/{feedRecipe}', [FeedRecipeController::class, 'destroy'])->name('destroy');
+        });
+
+        Route::prefix('feed-batches')->as('feed-batches.')->group(function () {
+            Route::get('/', [FeedBatchController::class, 'index'])->name('index');
+            Route::post('/', [FeedBatchController::class, 'store'])->name('store');
+            Route::delete('/{feedBatch}', [FeedBatchController::class, 'destroy'])->name('destroy');
         });
     });
 
@@ -123,6 +154,7 @@ Route::middleware(['auth', 'role_or_permission:admin|manage procurement'])
             Route::get('/{po}/edit', [PurchaseOrderController::class, 'edit'])->name('edit');
             Route::put('/{po}', [PurchaseOrderController::class, 'update'])->name('update');
             Route::delete('/{po}', [PurchaseOrderController::class, 'destroy'])->name('destroy');
+            Route::get('/{purchaseOrder}/items-for-receiving', [PurchaseOrderController::class, 'getItemsForReceiving'])->name('items-for-receiving');
         });
 
         // Receiving

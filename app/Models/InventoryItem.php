@@ -17,4 +17,10 @@ class InventoryItem extends Model
     {
         return $this->hasMany(StockTransaction::class);
     }
+    public function getCurrentStock()
+    {
+        $totalIn = $this->transactions()->where('type', 'in')->sum('qty');
+        $totalOut = $this->transactions()->where('type', 'out')->sum('qty');
+        return $totalIn - $totalOut;
+    }
 }

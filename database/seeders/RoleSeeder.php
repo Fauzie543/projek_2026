@@ -30,6 +30,9 @@ class RoleSeeder extends Seeder
             // Attendance
             'view attendance',
             'edit attendance',
+
+            'manage inventory',
+            'manage procurement',
         ];
 
         foreach ($permissions as $permission) {
@@ -48,6 +51,7 @@ class RoleSeeder extends Seeder
             'manage employees',
             'view employees',
             'view attendance',
+            'manage inventory',
         ]);
 
         $staffRole->syncPermissions([
